@@ -12,7 +12,6 @@ Reduce noise using `noisereducer` and `pedalboard`.
 * Open [WebUI](http://127.0.0.1:7860)
 
 ## Todo
-* batch upload and download
 * optimized noise reduction
 * UI settings for Pedalboard
 * Windows EXE
