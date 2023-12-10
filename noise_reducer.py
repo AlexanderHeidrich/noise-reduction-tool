@@ -33,10 +33,11 @@ def remove_noise(input_audio):
 
    return 'tmp/' + output_file
 
-iface = gr.Interface(
-    fn=remove_noise,
-    inputs=gr.File(label="Upload an MP3 file"),
-    outputs=gr.File(label="Processed Audio")
-)
+with gr.Blocks(title="Noice Reducer Tool") as noiseReductionTool:
+   gr.Interface(
+       fn=remove_noise,
+       inputs=gr.File(label="Upload an MP3 file"),
+       outputs=gr.File(label="Processed Audio")
+   )
 
-iface.launch()
+noiseReductionTool.launch()
