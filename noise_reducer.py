@@ -25,6 +25,7 @@ def remove_noise(input_files):
 
         board = Pedalboard([
             NoiseGate(threshold_db=-30, ratio=1.5, release_ms=250),
+            Gain(gain_db=10)
         ])
 
         effected = board(reduced_noise, samplerate)
