@@ -6,7 +6,7 @@ from pedalboard import *
 from pedalboard.io import AudioFile
 from pathlib import Path
 
-def remove_noise(input_files):
+def remove_noise(input_files, threshold_db, ratio, release_ms, gain):
     Path("tmp").mkdir(parents=True, exist_ok=True)
     filelist = [ f for f in os.listdir("tmp") if f.endswith(".mp3") ]
     for f in filelist:
@@ -24,8 +24,8 @@ def remove_noise(input_files):
         reduced_noise = nr.reduce_noise(y=audio, sr=samplerate, stationary=True, prop_decrease=0.75)
 
         board = Pedalboard([
-            NoiseGate(threshold_db=-30, ratio=1.5, release_ms=250),
-            Gain(gain_db=10)
+            NoiseGate(threshold_db=threshold_db, ratio=ratio, release_ms=release_ms),
+            Gain(gain_db=gain)
         ])
 
         effected = board(reduced_noise, samplerate)
@@ -35,13 +35,22 @@ def remove_noise(input_files):
 
         processed_files.append(processed_file_path)
 
+    # todo => how to return list and show list of mp3 files...
     return processed_files
 
-with gr.Blocks(title="Noice Reducer Tool") as noiseReductionTool:
-   gr.Interface(
-       fn=remove_noise,
-       inputs=gr.Files(label="Upload MP3 files"),
-       outputs=gr.File(label="Processed Audio")
-   )
+with gr.Blocks(title="Noise Reducer Tool") as noiseReductionTool:
+    gr.Interface(
+        fn=remove_noise,
+        inputs=[
+            gr.Files(label="Upload MP3 files"),
+            gr.Slider(label="Threshold (dB)", minimum=-60, maximum=0, value=-30),
+            gr.Slider(label="Ratio", minimum=1, maximum=10, value=2),
+            gr.Slider(label="Release Time (ms)", minimum=10, maximum=500, value=100),
+            gr.Slider(label="Gain (dB)", minimum=0, maximum=50, value=10)
+        ],
+        outputs=[
+            gr.File(label="Processed Audio")
+        ]
+    )
 
 noiseReductionTool.launch()

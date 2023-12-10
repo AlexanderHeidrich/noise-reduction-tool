@@ -13,6 +13,5 @@ Reduce noise using `noisereducer` and `pedalboard`.
 
 ## Todo
 * optimized noise reduction
-* UI settings for Pedalboard
 * Windows EXE
 * MacOS DMG
